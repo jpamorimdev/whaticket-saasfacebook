@@ -192,7 +192,7 @@ const TicketsListCustom = (props) => {
     );
 
     if (profile === "user") {
-      dispatch({ type: "LOAD_TICKETS", payload: filteredTickets });
+      dispatch({ type: "LOAD_TICKETS", payload: tickets });
     } else {
       dispatch({ type: "LOAD_TICKETS", payload: tickets });
     }
@@ -242,15 +242,6 @@ const TicketsListCustom = (props) => {
     });
 
     socket.on(`company-${companyId}-appMessage`, (data) => {
-      const queueIds = queues.map((q) => q.id);
-      if (
-        profile === "user" &&
-        (queueIds.indexOf(data.ticket.queue?.id) === -1 ||
-          data.ticket.queue === null)
-      ) {
-        return;
-      }
-
       if (data.action === "create" && shouldUpdateTicket(data.ticket)) {
         dispatch({
           type: "UPDATE_TICKET_UNREAD_MESSAGES",

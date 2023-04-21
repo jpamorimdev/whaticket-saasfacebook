@@ -88,10 +88,12 @@ function _renderStepContent(step, setFieldValue, setActiveStep, values ) {
 
       const { data } = await api.post("/subscription", newValues);
       setDatePayment(data)
-      actions.setSubmitting(false);
+      actions.setSubmitting(true);
       setActiveStep(activeStep + 1);
       toast.success("Assinatura realizada com sucesso!, aguardando a realização do pagamento");
     } catch (err) {
+      actions.setSubmitting(false);
+     
       toastError(err);
     }
   }

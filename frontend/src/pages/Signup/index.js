@@ -30,7 +30,6 @@ import { i18n } from "../../translate/i18n";
 import { openApi } from "../../services/api";
 import toastError from "../../errors/toastError";
 import moment from "moment";
-import logo3 from "../../assets/logo3.png";
 // const Copyright = () => {
 // 	return (
 // 		<Typography variant="body2" color="textSecondary" align="center">
@@ -118,9 +117,12 @@ const SignUp = () => {
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<div className={classes.paper}>
-				<div>
-					<center><img style={{ margin: "0 auto", width: "70%" }} src={logo3} alt="logo3" /></center>
-				</div>
+				<Avatar className={classes.avatar}>
+					<LockOutlinedIcon />
+				</Avatar>
+				<Typography component="h1" variant="h5">
+					{i18n.t("signup.title")}
+				</Typography>
 				{/* <form className={classes.form} noValidate onSubmit={handleSignUp}> */}
 				<Formik
 					initialValues={user}

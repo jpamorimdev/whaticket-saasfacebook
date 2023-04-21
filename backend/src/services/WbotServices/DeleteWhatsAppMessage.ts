@@ -1,5 +1,4 @@
-import { proto, WASocket } from "@adiwajshing/baileys";
-import WALegacySocket from "@adiwajshing/baileys"
+import { proto, WALegacySocket, WASocket } from "@adiwajshing/baileys";
 import AppError from "../../errors/AppError";
 import GetTicketWbot from "../../helpers/GetTicketWbot";
 import GetWbotMessage from "../../helpers/GetWbotMessage";
@@ -29,17 +28,25 @@ const DeleteWhatsAppMessage = async (messageId: string): Promise<Message> => {
     const wbot = await GetTicketWbot(ticket);
     const messageDelete = messageToDelete as proto.WebMessageInfo;
 
-    const menssageDelete = messageToDelete as Message;
+    if (wbot.type === "legacy") {
+      const remoteJid = messageDelete.key.remoteJid as string;
+      await (wbot as WALegacySocket).sendMessage(remoteJid, {
+        delete: messageDelete.key
+      });
+    }
 
-    await (wbot as WASocket).sendMessage(menssageDelete.remoteJid, {
-      delete: {
-        id: menssageDelete.id,
-        remoteJid: menssageDelete.remoteJid,
-        participant: menssageDelete.participant,
-        fromMe: menssageDelete.fromMe
-      }
-    });
+    if (wbot.type === "md") {
+      const menssageDelete = messageToDelete as Message;
 
+      await (wbot as WASocket).sendMessage(menssageDelete.remoteJid, {
+        delete: {
+          id: menssageDelete.id,
+          remoteJid: menssageDelete.remoteJid,
+          participant: menssageDelete.participant,
+          fromMe: menssageDelete.fromMe
+        }
+      });
+    }
   } catch (err) {
     console.log(err);
     throw new AppError("ERR_DELETE_WAPP_MSG");

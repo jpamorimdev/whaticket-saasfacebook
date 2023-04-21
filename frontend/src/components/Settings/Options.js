@@ -339,6 +339,7 @@ export default function Options(props) {
             >
               <MenuItem value={"disabled"}>Desabilitado</MenuItem>
               <MenuItem value={"queue"}>Gerenciamento Por Fila</MenuItem>
+              <MenuItem value={"company"}>Gerenciamento Por Empresa</MenuItem>
             </Select>
             <FormHelperText>
               {loadingScheduleType && "Atualizando..."}

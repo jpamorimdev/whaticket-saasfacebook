@@ -432,7 +432,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 variant="body2"
                 color="textSecondary"
               > {ticket.lastMessage.includes('data:image/png;base64') ? <MarkdownWrapper> Localização</MarkdownWrapper> : <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>}
-                {ticket.lastMessage === "" ? <br /> : <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>}
+                {/* {ticket.lastMessage === "" ? <br /> : <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>} */}
               </Typography>
             </span>
 

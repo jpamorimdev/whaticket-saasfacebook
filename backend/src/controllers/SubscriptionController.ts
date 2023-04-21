@@ -106,7 +106,7 @@ export const createSubscription = async (
     });
   } catch (error) {
     console.log(error);
-    throw new AppError("Validation fails", 400);
+    throw new AppError("Problema encontrado, entre em contato com o suporte!", 400);
   }
 };
 

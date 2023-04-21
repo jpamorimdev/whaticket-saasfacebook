@@ -79,11 +79,11 @@ export default function TicketMessagesDialog({ open, handleClose, ticketId }) {
             const { queues, profile } = user;
 
             const queueAllowed = queues.find((q) => q.id === queueId);
-            if (queueAllowed === undefined && profile !== "admin") {
-              toast.error("Acesso não permitido");
-              history.push("/tickets");
-              return;
-            }
+            // if (queueAllowed === undefined && profile !== "admin") {
+            //   toast.error("Acesso não permitido");
+            //   history.push("/tickets");
+            //   return;
+            // }
 
             setContact(data.contact);
             setTicket(data);

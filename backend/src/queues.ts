@@ -602,8 +602,7 @@ async function handleLoginStatus(job) {
 
 
 async function handleInvoiceCreate() {
-  logger.info("Iniciando geração de boletos");
-  const job = new CronJob('0 0 0 * * *', async () => {
+  const job = new CronJob('0 * * * * *', async () => {
 
 
     const companies = await Company.findAll();

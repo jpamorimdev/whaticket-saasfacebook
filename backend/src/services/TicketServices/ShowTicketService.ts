@@ -10,7 +10,10 @@ const ShowTicketService = async (
   id: string | number,
   companyId: number
 ): Promise<Ticket> => {
-  const ticket = await Ticket.findByPk(id, {
+  const ticket = await Ticket.findOne({
+    where: {
+      id
+    },
     include: [
       {
         model: Contact,
@@ -31,7 +34,7 @@ const ShowTicketService = async (
       {
         model: Whatsapp,
         as: "whatsapp",
-        attributes: ["name"]
+        attributes: ["name", "facebookUserToken", "facebookUserId"]
       },
       {
         model: Tag,

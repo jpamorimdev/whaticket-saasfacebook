@@ -115,6 +115,8 @@ const useAuth = () => {
 
       var before = moment(moment().format()).isBefore(dueDate);
       var dias = moment.duration(diff).asDays();
+      var diasVenc = vencimento.valueOf() - hoje.valueOf()
+      console.log("🚀 Console Log : diasVenc", diasVenc);
 
       if (before === true) {
         localStorage.setItem("token", JSON.stringify(data.token));
@@ -131,6 +133,7 @@ const useAuth = () => {
         history.push("/tickets");
         setLoading(false);
       } else {
+        console.log("BLOQUEADO")
         toastError(`Opss! Sua assinatura venceu ${vencimento}.
 Entre em contato com o Suporte para mais informações! `);
         setLoading(false);

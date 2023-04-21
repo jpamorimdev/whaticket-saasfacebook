@@ -1,5 +1,5 @@
 import {
-  WASocket,
+  AnyWASocket,
   BinaryNode,
   Contact as BContact,
 } from "@adiwajshing/baileys";
@@ -16,7 +16,7 @@ import { logger } from "../../utils/logger";
 import createOrUpdateBaileysService from "../BaileysServices/CreateOrUpdateBaileysService";
 import CreateMessageService from "../MessageServices/CreateMessageService";
 
-type Session = WASocket & {
+type Session = AnyWASocket & {
   id?: number;
   store?: Store;
 };
@@ -108,6 +108,9 @@ const wbotMonitor = async (
       });
     });
 
+    wbot.ev.on("contacts.set", async (contacts: IContact) => {
+      console.log("set", contacts);
+    });
   } catch (err) {
     Sentry.captureException(err);
     logger.error(err);

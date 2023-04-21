@@ -99,7 +99,7 @@ const TransferTicketModalCustom = ({ modalOpen, onClose, ticketid }) => {
   const handleSaveTicket = async (e) => {
     e.preventDefault();
     if (!ticketid) return;
-    if (!selectedQueue || selectedQueue === "") return;
+    // if (!selectedQueue || selectedQueue === "") return;
     setLoading(true);
     try {
       let data = {};
@@ -108,13 +108,19 @@ const TransferTicketModalCustom = ({ modalOpen, onClose, ticketid }) => {
         data.userId = selectedUser.id;
       }
 
-      if (selectedQueue && selectedQueue !== null) {
-        data.queueId = selectedQueue;
+      // if (selectedQueue && selectedQueue !== null) {
+      //   data.queueId = selectedQueue;
 
-        if (!selectedUser) {
-          data.status = "pending";
-          data.userId = null;
-        }
+      //   if (!selectedUser) {
+      //     data.status = "pending";
+      //     data.userId = null;
+      //   }
+      // }
+
+      
+      if (!selectedUser) {
+        data.status = "pending";
+        data.userId = null;
       }
 
       await api.put(`/tickets/${ticketid}`, data);
