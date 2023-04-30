@@ -687,7 +687,7 @@ export async function startQueueProcess() {
 
   sendScheduledMessages.process("SendMessage", handleSendScheduledMessage);
 
-  campaignQueue.process("VerifyCampaigns", handleVerifyCampaigns);
+  campaignQueue.process("VerifyCampaignsDaatabase", handleVerifyCampaigns);
 
   campaignQueue.process("ProcessCampaign", handleProcessCampaign);
 
@@ -710,7 +710,7 @@ export async function startQueueProcess() {
   );
 
   campaignQueue.add(
-    "VerifyCampaigns",
+    "VerifyCampaignsDaatabase",
     {},
     {
       repeat: { cron: "*/20 * * * * *" },
