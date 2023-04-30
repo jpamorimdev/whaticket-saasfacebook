@@ -27,6 +27,7 @@ interface TicketData {
   status: string;
   queueId: number;
   userId: number;
+  justClose: boolean;
 }
 
 export const index = async (req: Request, res: Response): Promise<Response> => {
