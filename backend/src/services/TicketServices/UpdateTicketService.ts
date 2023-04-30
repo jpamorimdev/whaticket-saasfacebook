@@ -21,6 +21,7 @@ interface TicketData {
   queueId?: number | null;
   chatbot?: boolean;
   queueOptionId?: number;
+  justClose?: boolean;
 }
 
 interface Request {
@@ -41,7 +42,7 @@ const UpdateTicketService = async ({
   companyId
 }: Request): Promise<Response> => {
   try {
-    const { status } = ticketData;
+    const { status, justClose } = ticketData;
     let { queueId, userId } = ticketData;
     let chatbot: boolean | null = ticketData.chatbot || false;
     let queueOptionId: number | null = ticketData.queueOptionId || null;
@@ -84,7 +85,7 @@ const UpdateTicketService = async ({
       );
 
       if (setting?.value === "enabled") {
-        if (ticketTraking.ratingAt == null) {
+        if (ticketTraking.ratingAt == null && !justClose) {
 
 
           const ratingTxt = ratingMessage || "";
@@ -181,6 +182,10 @@ const UpdateTicketService = async ({
         startedAt: null,
         userId: null
       });
+      io.emit(`company-${companyId}-ticket`, {
+        action: "removeFromList",
+        ticketId: ticket?.id
+      });
     }
 
     if (status !== undefined && ["open"].indexOf(status) > -1) {
@@ -191,16 +196,27 @@ const UpdateTicketService = async ({
         whatsappId: ticket.whatsappId,
         userId: ticket.userId
       });
+      io.emit(`company-${companyId}-ticket`, {
+        action: "removeFromList",
+        ticketId: ticket?.id
+      });
     }
 
     await ticketTraking.save();
 
-    if (ticket.status !== oldStatus || ticket.user?.id !== oldUserId) {
-      io.to(oldStatus).emit(`company-${companyId}-ticket`, {
-        action: "delete",
-        ticketId: ticket.id
+    if (justClose && status == 'closed') {
+      io.emit(`company-${companyId}-ticket`, {
+        action: "removeFromList",
+        ticketId: ticket?.id
       });
-    }
+
+    } else
+      if (ticket.status !== oldStatus || ticket.user?.id !== oldUserId) {
+        io.to(oldStatus).emit(`company-${companyId}-ticket`, {
+          action: "delete",
+          ticketId: ticket.id
+        });
+      }
 
     io.to(ticket.status)
       .to("notification")
