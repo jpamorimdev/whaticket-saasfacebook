@@ -23,7 +23,7 @@ type CompanyData = {
   name: string;
   id?: number;
   phone?: string;
-  email?: string; 
+  email?: string;
   status?: boolean;
   planId?: number;
   campaignsEnabled?: boolean;
