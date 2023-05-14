@@ -35,7 +35,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-currency-format": "^1.1.0",
     "react-dom": "^16.13.1",
-    "react-facebook-login": "^4.1.1"
+    "react-facebook-login": "@greatsumini/react-facebook-login"
     "react-icons": "^4.4.0",
     "react-input-mask": "^2.0.4",
     "react-modal-image": "^2.5.0",
