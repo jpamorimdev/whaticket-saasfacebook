@@ -602,7 +602,8 @@ async function handleLoginStatus(job) {
 
 
 async function handleInvoiceCreate() {
-  const job = new CronJob('0 * * * * *', async () => {
+  logger.info("Iniciando geração de boletos");
+  const job = new CronJob('0 0 0 * * *', async () => {
 
 
     const companies = await Company.findAll();
@@ -687,7 +688,7 @@ export async function startQueueProcess() {
 
   sendScheduledMessages.process("SendMessage", handleSendScheduledMessage);
 
-  campaignQueue.process("VerifyCampaignsDaatabase", handleVerifyCampaigns);
+  campaignQueue.process("VerifyCampaigns", handleVerifyCampaigns);
 
   campaignQueue.process("ProcessCampaign", handleProcessCampaign);
 
@@ -710,7 +711,7 @@ export async function startQueueProcess() {
   );
 
   campaignQueue.add(
-    "VerifyCampaignsDaatabase",
+    "VerifyCampaigns",
     {},
     {
       repeat: { cron: "*/20 * * * * *" },
