@@ -53,7 +53,7 @@ export const createSubscription = async (
 
   const body = {
     calendario: {
-      expiracao: 3600
+      expiracao: 7200
     },
     valor: {
       original: price.toLocaleString("pt-br", { minimumFractionDigits: 2 }).replace(",", ".")
@@ -106,7 +106,7 @@ export const createSubscription = async (
     });
   } catch (error) {
     console.log(error);
-    throw new AppError("Problema encontrado, entre em contato com o suporte!", 400);
+    throw new AppError("Validation fails", 400);
   }
 };
 
