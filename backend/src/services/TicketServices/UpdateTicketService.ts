@@ -13,6 +13,7 @@ import FindOrCreateATicketTrakingService from "./FindOrCreateATicketTrakingServi
 import GetTicketWbot from "../../helpers/GetTicketWbot";
 import { verifyMessage } from "../WbotServices/wbotMessageListener";
 import { isNil } from "lodash";
+import Whatsapp from "../../models/Whatsapp";
 import sendFaceMessage from "../FacebookServices/sendFacebookMessage";
 
 interface TicketData {
