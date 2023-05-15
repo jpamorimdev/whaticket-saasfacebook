@@ -1,5 +1,4 @@
 import { proto, WASocket } from "@adiwajshing/baileys";
-import WALegacySocket from "@adiwajshing/baileys"
 import { getIO } from "../libs/socket";
 import Message from "../models/Message";
 import Ticket from "../models/Ticket";
@@ -12,7 +11,7 @@ const SetTicketMessagesAsRead = async (ticket: Ticket): Promise<void> => {
   try {
     const wbot = await GetTicketWbot(ticket);
     // no baileys temos que marcar cada mensagem como lida
-    // não o chat inteiro como é feito no legacy
+    // nao o chat inteiro como e feito no legacy
     const getJsonMessage = await Message.findAll({
       where: {
         ticketId: ticket.id,
