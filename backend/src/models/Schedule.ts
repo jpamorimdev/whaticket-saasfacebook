@@ -50,6 +50,9 @@ class Schedule extends Model<Schedule> {
   @Column(DataType.STRING)
   status: string;
 
+  @Column
+  recorrency: boolean;
+
   @CreatedAt
   createdAt: Date;
 
