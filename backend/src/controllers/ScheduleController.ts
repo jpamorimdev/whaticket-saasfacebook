@@ -36,7 +36,8 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     body,
     sendAt,
     contactId,
-    userId
+    userId,
+    recorrency
   } = req.body;
   const { companyId } = req.user;
 
@@ -45,7 +46,8 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     sendAt,
     contactId,
     companyId,
-    userId
+    userId,
+    recorrency
   });
 
   const io = getIO();
