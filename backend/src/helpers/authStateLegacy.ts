@@ -1,9 +1,10 @@
-import {
-  BufferJSON,
-  LegacyAuthenticationCreds,
-  newLegacyAuthCreds
-} from "@adiwajshing/baileys";
+//Modificado
 import Whatsapp from "../models/Whatsapp";
+
+interface MyAuthenticationCreds {
+  encKey: Buffer;
+  macKey: Buffer;
+}
 
 export const authStateLegacy = async (whatsapp: Whatsapp) => {
   const updateWhatsappData = await Whatsapp.findOne({
@@ -11,24 +12,32 @@ export const authStateLegacy = async (whatsapp: Whatsapp) => {
       id: whatsapp.id
     }
   });
-  let state: LegacyAuthenticationCreds;
-  if (updateWhatsappData?.session) {
-    state = JSON.parse(updateWhatsappData?.session, BufferJSON.reviver);
-    if (typeof state.encKey === "string") {
-      state.encKey = Buffer.from(state.encKey, "base64");
-    }
 
-    if (typeof state.macKey === "string") {
-      state.macKey = Buffer.from(state.macKey, "base64");
-    }
+  let state: MyAuthenticationCreds;
+
+  if (updateWhatsappData?.session) {
+    state = JSON.parse(updateWhatsappData.session, (key, value) => {
+      if (key === 'encKey' || key === 'macKey') {
+        return Buffer.from(value, 'base64');
+      }
+      return value;
+    });
   } else {
-    state = newLegacyAuthCreds();
+    state = {
+      encKey: Buffer.from('FEEDFACEDEADBEEFFEEDFACEDEADBEEF', 'hex'),
+      macKey: Buffer.from('FEEDFACEDEADBEEFFEEDFACEDEADBEEF', 'hex')
+    }
   }
 
   return {
     state,
     saveState: async () => {
-      const str = JSON.stringify(state, BufferJSON.replacer, 2);
+      const str = JSON.stringify(state, (key, value) => {
+        if (key === 'encKey' || key === 'macKey') {
+          return value.toString('base64');
+        }
+        return value;
+      }, 2);
       await whatsapp.update({
         session: str
       });
