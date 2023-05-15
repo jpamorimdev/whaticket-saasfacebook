@@ -1,5 +1,5 @@
 import {
-  AnyWASocket,
+  WASocket,
   BinaryNode,
   Contact as BContact,
 } from "@adiwajshing/baileys";
