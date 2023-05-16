@@ -28,7 +28,10 @@ const DeleteWhatsAppMessage = async (messageId: string): Promise<Message> => {
     const wbot = await GetTicketWbot(ticket);
     const messageDelete = messageToDelete as proto.WebMessageInfo;
 
-      await (wbot as WASocket).sendMessage(messageToDelete.remoteJid, {
+
+    if (wbot.type === "md") {
+      const messageDelete = messageToDelete as Message;
+      await (wbot as WASocket).sendMessage(messageDelete.remoteJid, {
         delete: {
           id: messageDelete.id,
           remoteJid: messageDelete.remoteJid,
@@ -46,4 +49,4 @@ const DeleteWhatsAppMessage = async (messageId: string): Promise<Message> => {
   return message;
 };
 
-  export default DeleteWhatsAppMessage;
+export default DeleteWhatsAppMessage;
