@@ -43,7 +43,7 @@ const SendWhatsAppMessage = async ({
         };
       }
       console.log(chatMessages)
-    }
+    
   }
 
   try {
@@ -61,5 +61,6 @@ const SendWhatsAppMessage = async ({
     console.log(err);
     throw new AppError("ERR_SENDING_WAPP_MSG");
   }
+};
 
 export default SendWhatsAppMessage;

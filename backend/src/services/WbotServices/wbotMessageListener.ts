@@ -5,8 +5,6 @@ import * as Sentry from "@sentry/node";
 import { isNil, isNull, head } from "lodash";
 
 import {
-  Chat,
-  WASocket,
   downloadContentFromMessage,
   extractMessageContent,
   getContentType,
@@ -18,6 +16,7 @@ import {
   BinaryNode,
   WAMessageStubType,
   WAMessageUpdate,
+  WASocket,
 } from "@adiwajshing/baileys";
 import Contact from "../../models/Contact";
 import Ticket from "../../models/Ticket";
@@ -29,7 +28,6 @@ import { logger } from "../../utils/logger";
 import CreateOrUpdateContactService from "../ContactServices/CreateOrUpdateContactService";
 import FindOrCreateTicketService from "../TicketServices/FindOrCreateTicketService";
 import ShowWhatsAppService from "../WhatsappService/ShowWhatsAppService";
-import { debounce } from "../../helpers/Debounce";
 import UpdateTicketService from "../TicketServices/UpdateTicketService";
 import formatBody from "../../helpers/Mustache";
 import { Store } from "../../libs/store";
@@ -47,19 +45,11 @@ import { Op } from "sequelize";
 import { campaignQueue, parseToMilliseconds, randomValue } from "../../queues";
 import User from "../../models/User";
 import Setting from "../../models/Setting";
-import Baileys from "../../models/Baileys";
-import { getWbot } from "../../libs/wbot";
-import GetDefaultWhatsApp from "../../helpers/GetDefaultWhatsApp";
-import { CreateOrUpdateBaileysChatService } from "../BaileysChatServices/CreateOrUpdateBaileysChatService";
-import { ShowBaileysChatService } from "../BaileysChatServices/ShowBaileysChatService";
-import Whatsapp from "../../models/Whatsapp";
 import { cacheLayer } from "../../libs/cache";
 import { provider } from "./providers";
+import { debounce } from "../../helpers/Debounce";
 
-const puppeteer = require('puppeteer');
 const fs = require('fs')
-const path = require('path');
-var axios = require('axios');
 
 type Session = WASocket & {
   id?: number;
@@ -399,7 +389,7 @@ export const getMeSocket = (wbot: Session): IMe => {
     id: jidNormalizedUser((wbot as WASocket).user.id),
     name: (wbot as WASocket).user.name
   };
-};
+}
 
 const getSenderMessage = (
   msg: proto.IWebMessageInfo,
@@ -414,6 +404,9 @@ const getSenderMessage = (
 };
 
 const getContactMessage = async (msg: proto.IWebMessageInfo, wbot: Session) => {
+  if (wbot.type === "legacy") {
+    return wbot.store.contacts[msg.key.participant || msg.key.remoteJid] as IMe;
+  }
 
   const isGroup = msg.key.remoteJid.includes("g.us");
   const rawNumber = msg.key.remoteJid.replace(/\D/g, "");
