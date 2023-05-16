@@ -108,9 +108,6 @@ const wbotMonitor = async (
       });
     });
 
-    wbot.ev.on("contacts.set", async (contacts: IContact) => {
-      console.log("set", contacts);
-    });
   } catch (err) {
     Sentry.captureException(err);
     logger.error(err);

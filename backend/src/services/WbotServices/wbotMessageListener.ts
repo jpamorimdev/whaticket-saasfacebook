@@ -404,12 +404,9 @@ const getSenderMessage = (
 };
 
 const getContactMessage = async (msg: proto.IWebMessageInfo, wbot: Session) => {
-  if (wbot.type === "legacy") {
-    return wbot.store.contacts[msg.key.participant || msg.key.remoteJid] as IMe;
-  }
-
   const isGroup = msg.key.remoteJid.includes("g.us");
   const rawNumber = msg.key.remoteJid.replace(/\D/g, "");
+
   return isGroup
     ? {
       id: getSenderMessage(msg, wbot),
@@ -1849,11 +1846,7 @@ const wbotMessageListener = async (wbot: Session, companyId: number): Promise<vo
         handleMsgAck(message, message.update.status);
       });
     });
-
-    wbot.ev.on("messages.set", async (messageSet: IMessage) => {
-      messageSet.messages.filter(filterMessages).map(msg => msg);
-    });
-  } catch (error) {
+      } catch (error) {
     Sentry.captureException(error);
     logger.error(`Error handling wbot message listener. Err: ${error}`);
   }
