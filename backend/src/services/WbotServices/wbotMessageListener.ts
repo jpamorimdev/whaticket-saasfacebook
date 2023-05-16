@@ -414,9 +414,6 @@ const getSenderMessage = (
 };
 
 const getContactMessage = async (msg: proto.IWebMessageInfo, wbot: Session) => {
-  if (wbot.type === "legacy") {
-    return wbot.store.contacts[msg.key.participant || msg.key.remoteJid] as IMe;
-  }
 
   const isGroup = msg.key.remoteJid.includes("g.us");
   const rawNumber = msg.key.remoteJid.replace(/\D/g, "");
